@@ -12,6 +12,8 @@ achieved your goal from the start.
 
 > [!WARNING]
 > A iPad with iOS 16 or newer is required
+
+To learn more about the requirements, you can visit the [Requirements file](REQIUREMENTS.md)
 ---
 
 ### Step 1: Download the Project
