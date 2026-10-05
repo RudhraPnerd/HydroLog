@@ -30,6 +30,12 @@ struct ContentView: View {
                     Label("History", systemImage: "calendar")
                 }
                 .tag(2)
+            
+            AboutView()
+                .tabItem{
+                    Label("About", systemImage: "info.circle.fill")
+                }
+                .tag(3)
         }
         .tint(.cyan)
     }

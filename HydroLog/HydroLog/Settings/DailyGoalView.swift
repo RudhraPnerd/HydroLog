@@ -11,7 +11,7 @@ import SwiftUI
 var globalDailyGoal: Double = 2000
 
 struct DailyGoalView: View {
-    @State private var dailyGoal: Double = globalDailyGoal
+    @AppStorage("dailyGoal") private var dailyGoal: Double = globalDailyGoal
 
     private var goalBinding: Binding<Double> {
         Binding(

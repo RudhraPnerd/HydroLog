@@ -8,17 +8,22 @@
 import Foundation
 import UserNotifications
 
-struct Notifications {
+final class Notifications: NSObject, UNUserNotificationCenterDelegate {
     static let shared = Notifications()
     
-    private init() {}
+    private override init() {
+        super.init()
+        // Sets the delegate so notifications can present while the app is in the foreground
+        UNUserNotificationCenter.current().delegate = self
+    }
     
     func requestAndScheduleNotification() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if granted {
-                // Schedules both notifications forever
-                scheduleDailyReminder()
-                scheduleGoodNightGreeting()
+                self.scheduleDailyReminder()
+                self.scheduleGoodNightGreeting()
+            } else if let error = error {
+                print("Notification authorization error: \(error.localizedDescription)")
             }
         }
     }
@@ -36,7 +41,11 @@ struct Notifications {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(identifier: "daily_water_reminder", content: content, trigger: trigger)
 
-        UNUserNotificationCenter.current().add(request)
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error adding daily reminder: \(error.localizedDescription)")
+            }
+        }
     }
     
     func scheduleGoodNightGreeting() {
@@ -52,6 +61,19 @@ struct Notifications {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(identifier: "daily_good_night_greeting", content: content, trigger: trigger)
         
-        UNUserNotificationCenter.current().add(request)
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error adding good night greeting: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    // Displays notification banners even when the app is open on screen
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        completionHandler([.banner, .sound])
     }
 }
