@@ -27,7 +27,7 @@ struct AboutView: View {
                         Text("HydroLog")
                             .font(.system(size: 32, weight: .bold, design: .rounded))
                         
-                        Text("Version 1.0.0 (Beta)")
+                        Text("Version 1.0.0")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .padding(.horizontal, 12)
@@ -126,7 +126,6 @@ struct FeatureRow: View {
         }
     }
 }
-
 #Preview {
     AboutView()
 }
